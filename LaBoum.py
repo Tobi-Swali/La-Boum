@@ -1,6 +1,9 @@
 import discord
 import random
 import time
+import os
+import subprocess
+import sys
 
 client = discord.Client()
 
@@ -266,5 +269,16 @@ def roll(a, d, o, v):
             output += (str(round((total/v),2))+"*")
     return output
 
+token_path = 'token.txt'
+
+if os.path.exists(token_path):
+    with open(token_path, 'r') as file:
+        token = file.read().replace('\n', '')
+else:
+    token = input("Discord Token:")
+    with open(token_path, 'w') as file:
+        file.write(token)
+
+
 # do not keep the key below for public. The key is unique and anyone can controll your bot with this key:
-client.run('ODE5MTQzMDgxMDU2MTQxMzMz.YEiUcQ.b4CcbdpHcXq2_gB5l3f6sqhBx4o')
+client.run(token)
