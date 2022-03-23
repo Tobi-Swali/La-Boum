@@ -17,116 +17,103 @@ async def on_message(message):
     # make sure to not get triggered by own messages
     if message.author == client.user:
         return
-    message.content =message.content.lower()
     m= message.content
+    m =m.lower()
+
     output = ""
     authorID = " <@" +str(message.author.id) +">"
 
+#-----------------------------COMMANDS-----------------------------COMMANDS-----------------------------COMMANDS-----------------------------COMMANDS-----------------------------#
+
     # test for text commands
-    if message.content.startswith("/status"):
-        output = "(❦ᴗ❦)"
-    elif message.content.startswith("/help") or message.content.startswith("/hilfe"):
-        if message.content.startswith("/helpmaster") or message.content.startswith("/hilfemeister") or message.content.startswith("/helpmeister") or message.content.startswith("/hilfemaster"):
+    if m.startswith("/status"):
+        output = "(❦ᴗ❦) ready to roll the dice"
+    elif m.startswith("/help") or m.startswith("/hilfe"):
+        if m.startswith("/helpmaster") or m.startswith("/hilfemeister") or m.startswith("/helpmeister") or m.startswith("/hilfemaster"):
             output = helpMaster()
         else:
             output = helpGeneral()
-    elif message.content.startswith("/wiki"):
+    elif m.startswith("/wiki"):
         output = "OnePiecePedia: <https://onepiece.fandom.com/de/wiki/OnePiecePedia:Willkommen> \nOPwiki: <https://opwiki.org>"
-    #elif message.content.startswith("theme"):
-    #    if message.content.startswith("themeping"):
+    #elif m.startswith("theme"):
+    #    if m.startswith("themeping"):
     #        output ="@here we are again\n"
-    #    output += "```.        .          .    .    .            .            .                   .\n               .               ..       .       .   .             .\n .      .     I n   t h e   l a s t   e p i s o d e   o f   . . .             .\n                     .              .       .                    .      .\n.        .               .       .     .            .\n   .           .        .                     .        .            .\n             .               .    .          .              .   .         .\n               _________________      ____         __________\n .       .    /                 |    /    \    .  |          \ \n     .       /    ______   _____| . /      \      |    ___    |     .     .\n             \    \    |   |       /   /\   \     |   |___>   |\n           .  \    \   |   |      /   /__\   \  . |         _/               .\n .     ________>    |  |   | .   /            \   |   |\    \_______    .\n      |            /   |   |    /    ______    \  |   | \           |\n      |___________/    |___|   /____/      \____\ |___|  \__________|    .\n  .     ____    __  . _____   ____      .  __________   .  _________\n       \    \  /  \  /    /  /    \       |          \    /         |      .\n        \    \/    \/    /  /      \      |    ___    |  /    ______|  .\n         \              /  /   /\   \ .   |   |___>   |  \    \ \n   .      \            /  /   /__\   \    |         _/.   \    \            +\n           \    /\    /  /            \   |   |\    \______>    |   .\n            \  /  \  /  /    ______    \  |   | \              /          .\n .       .   \/    \/  /____/      \____\ |___|  \____________/  DSA\n                               .                                        .\n     .                           .         .               .                 .\n                .                                   .            .\n```"
-    elif message.content.startswith("/tren") or message.content.startswith("/cut"):
-        output = seperator(message.content)
-    elif message.content.startswith("/nani"):
+    #    output += "" #insert ascii-art later
+    elif m.startswith("/tren") or m.startswith("/cut"):
+        output = seperator(m)
+    elif m.startswith("/nani"):
         output = "<:sanji:725100920576147487><:nani:725100919703863407>"
-    elif message.content.startswith("/berry"):
+    elif m.startswith("/berry"):
         output = "[ <:Beri:735987151485010021>(•ᴗ•) <:Beri:735987151485010021>]" #[̲̅ <:Beri:735987151485010021>(̲̅•͟ᴗ•͟)̲̅ <:Beri:735987151485010021>]
-    #elif message.content.startswith("credits"):
-    #    output = "```La Boum by Brook\nunter beobachtung von Lordi\n\nNo Ewoks were harmed during the production of Holodice\nIch werde hier wirklich überhaupt gar nicht von einem\nSith Lord gezwungen das dazu zu schreiben.\n\n$3(\)D |-|3£P \n              -74R335```"
-
-    elif message.content.startswith("/treffer") or message.content.startswith("/hit"):
+    elif m.startswith("/credits"):
+        output = "```LaBoumBot by Tobi-Swali\nhttps://github.com/Tobi-Swali\nhttps://github.com/Tobi-Swali/La-Boum\n\nNo Minks were harmed during the production of LaBoumBot\n```"
+    elif m.startswith("/treffer") or m.startswith("/hit"):
         output = "Trefferwürfel: " +roll_hit() + authorID
-    elif message.content.startswith("/münz") or message.content.startswith("/coin"):
-        output = "50/50: " +roll_coin() + authorID
+    elif m.startswith("/münz") or m.startswith("/coin"):
+        output = "Münzwurf: " +roll_coin() + authorID
 
-    elif message.content.startswith("/exit0"):
+    elif m.startswith("/exit0"):
         await message .channel.send("La Boum müde - La Boum schlafen")
         exit()
-    #if (needAuthorID and (not output.startswith("'"'Das ist nicht der Text den ihr sucht'"' ~Tobi-Wan Kenobi"))):
-    #    output += authorID
+    elif m.startswith("/version"):
+        output = "0.3.1"
 
-    #quickfix for /X commands
-    if (m=="/1"):
-        m="/1w20"
-    elif (m=="/2"):
-        m="/2w20"
-    elif (m=="/3"):
-        m="/3w20"
-    elif (m=="/4"):
-        m="/1w4"
-    elif (m=="/5"):
-        m="/1w5"
-    elif (m=="/6"):
-        m="/1w6"
-    elif (m=="/7"):
-        m="/1w7"
-    elif (m=="/8"):
-        m="/1w8"
-    elif (m=="/9"):
-        m="/1w9"
+    #-----------------------------DICE---------------------------------DICE---------------------------------DICE---------------------------------DICE---------------------------------#
 
-    # dice-command input calculation
-    # only if output is empty, message is a slash-command AND first char after '/' is allowed
-    if ((output == "") and (message.content.startswith("/")) and (len(m)>2) and ((m[1]=="d") or (m[1]=="w") or (m[1]=="0") or (m[1]=="1") or (m[1]=="2") or (m[1]=="3") or (m[1]=="4") or (m[1]=="5") or (m[1]=="6") or (m[1]=="7") or (m[1]=="8") or (m[1]=="9"))):
-        amountStr = ""
-        diceStr = ""
-        valueStr = ""
-        amount = 1
-        dice = 0
-        value = 0       # value for the calculation with the operator
+    # dice-command-calculation
+    # inputfilter (/ AND d,w,1-9)
+
+    map = {"d":2, "w":2, "1":1, "2":1, "3":1, "4":1, "5":1, "6":1, "7":1, "8":1, "9":1}
+    if ((output == "") and (m.startswith("/")) and (len(m)>=2) and map[m[1]]>0):
+    #if ((output == "") and (m.startswith("/")) and (len(m)>=2) and ((m[1]=="d") or (m[1]=="w") or (m[1]=="1") or (m[1]=="2") or (m[1]=="3") or (m[1]=="4") or (m[1]=="5") or (m[1]=="6") or (m[1]=="7") or (m[1]=="8") or (m[1]=="9"))):
+        amountStr = ""              
+        diceStr = ""                
+        valueStr = ""               
+        amount = 0                  # 'amount' of dice
+        dice = 0                    # kind of 'dice'
+        value = 0                   # operand 'value'
         dw = "x"
-        operator = ""        
-        # remove the "/" from the input message (message.content)
-        # l = length of string m; m = message
-        m = m[-(len(m)-1):]
-        # check command for amount (and shorten message-string) [while not next command, do...]
+        operand = ""                # 'operand'
+        m = m[-(len(m)-1):]         # remove 1st char ("/")
+
+        # check for 'amount'
         while ((len(m) != 0) and ((m[0] != "d") and (m[0] != "w") and (m[0] != "+") and (m[0] != "-") and (m[0] != "*") and (m[0] != "/"))):
             if(((m[0] == "0") and (amountStr !="")) or (m[0] == "1") or (m[0] == "2") or (m[0] == "3") or (m[0] == "4") or (m[0] == "5") or (m[0] == "6") or (m[0] == "7") or (m[0] == "8") or (m[0] == "9")):
                 amountStr += m[0]
             if (len(m)>1):
-                m = m[-(len(m)-1):] 
+                m = m[-(len(m)-1):]
             else:
                 m = ""
-        # if no amount occur use one dice
+        # edgecase: no amount
         if amountStr == "":
-            amountStr = "1" # amount is already initializes with 1
-        # convert amount
+            amountStr = "1"
+        # convert 'amount'
         amount = int(amountStr)
+
         # if m is still a message go on
         if len(m) !=0:
             if ((m[0] == "d") or (m[0] == "w")):
-                # rewrite dw (and shorten message-string)
                 dw = m[0]
                 m = m[-(len(m)-1):]
-            # check command for number (and shorten message-string) [while not next command, do...] ------------------------------
+
+            # check 'dice'
             while ((len(m) != 0) and ((m[0] != "+") and (m[0] != "-") and (m[0] != "*") and (m[0] != "/"))):
                 if(((m[0] == "0") and (diceStr !="")) or (m[0] == "1") or (m[0] == "2") or (m[0] == "3") or (m[0] == "4") or (m[0] == "5") or (m[0] == "6") or (m[0] == "7") or (m[0] == "8") or (m[0] == "9")):
                     diceStr += m[0]
-                    print
                 if (len(m)>1):
                     m = m[-(len(m)-1):] 
                 else:
                     m = "+"
-            # some commands have no dice in this position. (/4+2 here the dice is in first place)
+            # convert 'dice'
             if diceStr !="":
                 dice = int(diceStr)
-            # continue only if amount is a number (cant roll a 0-sided dice)
+
+            # check 'operand'
             if len(m) >1:
-                # check command for operation (+-*/)
-                operator = m[0]
+                operand = m[0]
                 m= m[-(len(m)-1):]
-                # check command for value
+
+                # check 'value'
                 while (len(m) != 0):
                     if(((m[0] == "0") and (valueStr !="")) or (m[0] == "1") or (m[0] == "2") or (m[0] == "3") or (m[0] == "4") or (m[0] == "5") or (m[0] == "6") or (m[0] == "7") or (m[0] == "8") or (m[0] == "9")):
                         valueStr += m[0]
@@ -134,63 +121,76 @@ async def on_message(message):
                         m = m[-(len(m)-1):] 
                     else:
                         m = "" 
-                    #m = m[-(len(m)-1):]
+                # convert 'value'
                 value = int(valueStr)
+        
+        # short throws (/X)
         if dw == "x":
-            # commands with only one number (z.B. /6) have the dice in first place instead of the amount
+            # short throw (/1 /2 /3 = 1d20 2d20 3d20)
             if amount <= 3:
-                # special case: /1 /2 /3 are equal to /1w20 /2w20 /3w20
                 dice =20
                 diceStr ="20"
+            # short throw (/X =1dX)
             else:
                 dice = amount
                 diceStr = amountStr
                 amount = 1
                 amountStr = "1"
             dw = "d"
+
         # roll the dice
         if  (dice>0):
-            output = "Rolled: " +amountStr +"x " +dw +diceStr +":   " +roll(amount, dice, operator, value) +authorID
+            if(value>0):
+                output = "Rolled: " +amountStr +"x " +dw +diceStr +" " +operand +valueStr +":   " +roll(amount, dice, operand, value) +authorID
+            else:
+                output = "Rolled: " +amountStr +"x " +dw +diceStr +":   " +roll(amount, dice, operand, value) +authorID
         else:
-            output = ""
-        
+            output = "Command failed"
+            # for debugging
+            print(output+": <"+m+"> (["+amountStr+";"+str(amount)+"]["+dw+"]["+diceStr+";"+str(dice)+"]["+operand+"]["+valueStr+"]["+str(value)+"])")
+
+    # check if any 'output' available
     if output == "":
+        # No 'output' means incorrect command
         output = "¿(❦﹏❦)?  (try '/help')"
+    # send the 'output' to discord
     await message.channel.send(output)
+
+#-----------------------------HELP---------------------------------HELP---------------------------------HELP---------------------------------HELP---------------------------------#
 
 def helpGeneral():
     m = "```" # 3 characters (helpMaster())
-    output0 = "**(◍•ᴗ•◍)**\n" # 13 characters (helpMaster())
-    output1 = "Vereinfachte 20er: /1 /2 /3      | / & menge an 20ern [max.3]\n"
-    output2 = "Einfache Würfe:    /10 /6+2      | / & würfel [ab 4] (+-*/ & Wert(\n"
-    output3 = "Eingabe:           /2d6+5        | / & (Menge) & d|w & Würfel & (+-*/ & Wert)\n" 
-    output4 = "Münzwurf (50/50):  /coin /münze  | Liefert genau: Hoch/Kopf bzw. Tief/Zahl\n"
-    output5 = "Trefferwürfel:     /hit /treffer | Gibt Trefferzone an\n"
-    output6 = "Links:             /wiki         | OnePiecePedia und OPwiki"
-    #output7 = "Credits:           /credits      | Holodice Credits"
-    return (output0 +m +output1 +output2 +output3 +output4 +output5 +output6 +m)
+    output0  = "**(◍•ᴗ•◍)**\n" # 13 characters (helpMaster())
+    output1  = "Vereinfachte 20er: /1 /2 /3        | / & Menge an 20ern [max.3]\n"
+    output1 += "Einfache Würfe:    /10 /6+2        | / & Würfel [ab 4] & (+-*/ & Wert)\n"
+    output1 += "Eingabe:           /2d6+5          | / & (Menge) & d|w & Würfel & (+-*/ & Wert)\n" 
+    output1 += "Münzwurf:          /münze    /coin | Liefert genau: Hoch/Kopf bzw. Tief/Zahl\n"
+    output1 += "Trefferwürfel:     /treffer  /hit  | Gibt Trefferzone an\n"
+    output1 += "Links:             /wiki           | Wookieepedia und Jedipedia\n"
+    output1 += "Credits:           /credits        | Holodice/Holowürfel Credits"
+    return (output0 +m +output1 +m)
 
 def helpMaster():
     m = "```"
-    output0 = "**(◍•ᴗ•◍)**\n"
-    output1 = "Status:            /status       | gibt bescheid ob Bot bereit ist\n"
-    #output2 = "Theme:             /theme        | gibt aus: In the last episode of... + Bild\n"
-    #output3 = "                   /themeping    | wie theme, pingt aber alle\n"
-    output4 = "Trennlinie:        /trenner Text | trenn.../cut & Trennlinientext\n"
-    output5 = "                                 | Alles nach dem ersten Leerzeichen wird Trennlinientext\n"
-    output6 = "Bot ausschalten:   /exit0        | ACHTUNG: Bot startet nicht automatisch neu\n\n"
+    output0  = "**(◍•ᴗ•◍)**\n"
+    output1  = "Status:            /status         | gibt bescheid ob Bot bereit ist\n"
+    output1 += "Version:           /version        | zeigt die aktuelle Version des bots\n"
+    #output1 += "Theme:             /theme          | gibt aus: In the last episode of... + Bild\n"
+    #output1 += "                   /themeping      | wie theme, pingt aber alle\n"
+    output1 += "Trennlinie:        /trenner  /cut  | /trenn /cut + Trennlinientext\n"
+    output1 += "                                   | Alles nach dem ersten Leerzeichen wird Trennlinientext\n"
+    output1 += "Bot ausschalten:   /exit0          | ACHTUNG: Bot startet nicht automatisch neu\n\n"
     outputHelp =(helpGeneral())
     # cut of the first 11 charactersof outputHelp
     outputHelp = outputHelp[-(len(outputHelp)-15):]
-    return (output0 +m +output1 +output4 +output5 +output6 +outputHelp)
+    return (output0 +m +output1 +outputHelp)
 
-
-
+#-----------------------------METHODS------------------------------METHODS------------------------------METHODS------------------------------METHODS------------------------------#
 
 # seperator line with custom text
 def seperator(m):
-    output1 = "```|\n|~==+++<<<<#####$$$$$$§§§§§§§"
-    output2 = " §§§§§§§$$$$$$#####>>>>+++==~\n| ```"
+    output1 = "```\\\n |~==+++<<<<#####$$$$$$§§§§§§§"
+    output2 = " §§§§§§§$$$$$$#####>>>>+++==~\n/```"
     messageArr = m.split()
     messageArgs = len(messageArr)
     argsCounter = 1
@@ -203,8 +203,9 @@ def seperator(m):
 # roll hit dice
 def roll_hit():
     # frequencies of body parts (customizable:)
-    arm = 3
-    leg = 3
+    # (standard DsA: 3,3,2,2,4)
+    arm = 3         # (consider: it's the value per arm)
+    leg = 3         # (consider: it's the value per leg)
     head = 2
     stomach = 2
     torso = 4
@@ -227,10 +228,9 @@ def roll_hit():
     elif result<=amount:
         hit = "Brust"
     else:
-        hit = "(∿•͟ ͜ •)∿ ︵ ┻━┻"
+        hit = "Rolling hit body dice failed (∿•͟ ͜ •)∿ ︵ ┻━┻"
     return hit
     
-
 # flip coin
 def roll_coin():
     coin = random.randint(1, 2)
@@ -239,7 +239,7 @@ def roll_coin():
     elif coin==2:
         return "Tief/Zahl"
     else:
-        return "(∿•͟ ͜ •)∿ ︵ ┻━┻"
+        return "Rolling flip coin failed (∿•͟ ͜ •)∿ ︵ ┻━┻"
 
 # roll dice
 # a = amount; d = dice-sides; o = operator; v = value for operator
@@ -269,16 +269,28 @@ def roll(a, d, o, v):
             output += (str(round((total/v),2))+"*")
     return output
 
-token_path = 'token.txt'
+#-----------------------------TOKEN--------------------------------TOKEN--------------------------------TOKEN--------------------------------TOKEN--------------------------------#
 
-if os.path.exists(token_path):
-    with open(token_path, 'r') as file:
-        token = file.read().replace('\n', '')
-else:
-    token = input("Discord Token:")
-    with open(token_path, 'w') as file:
-        file.write(token)
+#-------------------------------------------------------------------------------------------------------------------------#
+# For all who rather want to paste the token here instead of saveing it to the token.txt can do it the following way.     #
+# But I reccomend to not keep in the sourcecode because the key is unique and anyone can controll your bot with this key: #
+#-------------------------------------------------------------------------------------------------------------------------#
+token = "mytoken" # replace the word <mytoken> with your 59 character token
 
-
-# do not keep the key below for public. The key is unique and anyone can controll your bot with this key:
+if(len(token)<59):
+    # check for token in token.txt
+    token_path = 'token.txt'
+    if os.path.exists(token_path):
+        # token exits in token.txt
+        with open(token_path, 'r') as file:
+            token = file.read().replace('\n', '') 
+    else:
+        # no token found
+        print("\nFor your Information:")
+        print("To protect your token from beeing detected in the sourcecode of holodice it will get stored in a seperate file named token.txt in the same folder.")
+        print("You can find the token in the bot-configuration of the discord developers portal.")
+        print("This is a one-time process, so next time you start the bot it will be able to get the token automaticly from the token.txt.\n")
+        token = input("Discord token:")
+        with open(token_path, 'w') as file:
+            file.write(token)
 client.run(token)
