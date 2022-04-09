@@ -59,7 +59,7 @@ async def on_message(message):
         elif m.startswith(getLine("cmd_nani")) or m.startswith(getLineDefault("cmd_nani")):
             output = "<:sanji:725100920576147487><:nani:725100919703863407>"
         elif m.startswith(getLine("cmd_beri")) or m.startswith(getLineDefault("cmd_beri")):
-            output = "**[**<:Beri:735987151485010021>**(•ᴗ•)**<:Beri:735987151485010021>**]**"
+            output = bb+"["+bb+"<:Beri:735987151485010021>"+bb+"(•ᴗ•)"+bb+"<:Beri:735987151485010021>"+bb+"]"
         elif m.startswith(getLine("cmd_credits")) or m.startswith(getLineDefault("cmd_credits")):
             output = getLine("credits1")+rt+getLine("credits2")+rt+getLine("credits3")+rt+getLine("credits4")
         elif m.startswith(getLine("cmd_hit")) or m.startswith(getLineDefault("cmd_hit")):

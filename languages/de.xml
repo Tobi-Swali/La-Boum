@@ -19,6 +19,8 @@
     <translation text="cmd_beri">           beri</translation>
     <translation text="cmd_language">       sprach</translation>
     <translation text="cmd_version">        version</translation>
+    <!-- <translation text="cmd_theme">          theme</translation> -->
+    <!-- <translation text="cmd_themeping">      themeping</translation> -->
 
     <!-- BOT OUTPUT -->
     <!-- help -->
@@ -50,7 +52,7 @@
     <translation text="credits2">           &lt;https://github.com/swalbart&gt;</translation>
     <translation text="credits3">           &lt;https://github.com/swalbart/LaBoum&gt;</translation>
     <translation text="credits4">           *Keine Minks kamen bei der Produktion von LaBoum zu Schaden*</translation>
-    <translation text="general_error_input">¿(❦﹏❦)?  (hilfe unter '/help')</translation>
+    <translation text="general_error_input">¿(❦﹏❦)?  (hilfe unter '/hilfe')</translation>
 
     <!-- language -->
     <translation text="language_selected">                  Aktuell ist folgende Sprache ausgewählt: </translation>

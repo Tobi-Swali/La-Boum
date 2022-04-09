@@ -19,6 +19,8 @@
     <translation text="cmd_beri">           beri</translation>
     <translation text="cmd_language">       lang</translation>
     <translation text="cmd_version">        version</translation>
+    <!-- <translation text="cmd_theme">          theme</translation> -->
+    <!-- <translation text="cmd_themeping">      themeping</translation> -->
 
     <!-- BOT OUTPUT -->
     <!-- help -->
