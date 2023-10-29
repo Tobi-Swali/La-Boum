@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.5 - Advantage update
+* ### Advantage update
+    * Added advantage command '/adv' ('/advantage')
+    * Added advantage command '/dis' ('/disadvantage')
+    * Added operators '+' and '-' to advantage commands ('/adv +x)
+* ### Other
+    * Fixed typos in language files
+    * Fixed typo in language selection
+    * Edited separator output
+    * Edited variables
+
 ## 0.3.4 - Language change
 * ### Language change
     * Removed english xml file (en.xml)

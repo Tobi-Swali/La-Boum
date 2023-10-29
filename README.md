@@ -88,6 +88,8 @@ As with the normal dice you can optional add an 'operand' and a 'value'.
 | --- | ---|
 /coin     | delivers exactly 'high (head)' or 'low (tail)'
 /hit      | rolls where a character gets hit
+/adv      | rolls with advantage: 2d20, higher one counts
+/dis      | rolls with disadvantage: 2d20, lower one counts
 
   
 ### Other useful commands:
@@ -119,11 +121,11 @@ As this is an open source project you are free to edit the code yourself.
     ```
     line    code            comment
     ------------------------------------------------------------
-    270     arm = 3         # (consider: it's the value per arm)
-    271     leg = 3         # (consider: it's the value per leg)
-    272     head = 2
-    273     back = 2
-    274     chest = 4
+    275     arm = 3         # (consider: it's the value per arm)
+    276     leg = 3         # (consider: it's the value per leg)
+    277     head = 2
+    278     back = 2
+    279     chest = 4
     ```
     In this case the chance to hit the left arm is 3 out of 20  
     (arm +arm +leg +leg +head +back +chest = 20)  
@@ -133,7 +135,7 @@ As this is an open source project you are free to edit the code yourself.
 2. ### Token configration:
     
     ```
-    366     token = "mytoken" # here you are able to replace the word <mytoken> with your 59 character token (not recommended)
+    435     token = "mytoken" # here you are able to replace the word <mytoken> with your 59 character token (not recommended)
     ```
     If you want to store your bot-token in the code you have to replace the word 'mytoken' but it is recommended not to store the token in the code. Read more about the token in chapter 'Token safety'.
 

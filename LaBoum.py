@@ -29,8 +29,8 @@ async def on_message(message):
     # make sure to not get triggered by own messages
     if message.author == client.user:
         return
-    m= message.content
-    m =m.lower()
+    messageContent = message.content
+    m = messageContent.lower()
 
     output = ""
     authorID = " <@" +str(message.author.id) +">"
@@ -47,7 +47,7 @@ async def on_message(message):
             output = cb
             if m.startswith(getText("cmd_help_master1")) or m.startswith(getText("cmd_help_master2")) or m.startswith(getTextDefault("cmd_help_master1")) or m.startswith(getTextDefault("cmd_help_master2")):
                 output += getText("help_master01")+rt+getText("help_master02")+rt+getText("help_master03")+rt+getText("help_master04")+rt+getText("help_master05")+rt+getText("help_master06")+rt+getText("help_master07")+rt+getText("help_master08")+rt+getText("help_master09")+rt+rt
-            output += getText("help_player01")+rt+getText("help_player02")+rt+getText("help_player03")+rt+getText("help_player04")+rt+getText("help_player05")+rt+getText("help_player06")+rt+getText("help_player07")+cb
+            output += getText("help_player01")+rt+getText("help_player02")+rt+getText("help_player03")+rt+getText("help_player04")+rt+getText("help_player05")+rt+getText("help_player06")+rt+getText("help_player07")+rt+getText("help_player08")+rt+getText("help_player09")+cb
         # text commands
         elif m.startswith(getText("cmd_links")) or m.startswith(getTextDefault("cmd_links")):
             output = getText("links1")+rt+getText("links2")
@@ -56,17 +56,22 @@ async def on_message(message):
                 output = getText("ping")+rt
             output += theme()
         elif m.startswith(getText("cmd_cut")) or m.startswith(getTextDefault("cmd_cut")):
-            output = seperator(m)
+            output = seperator(messageContent)
         elif m.startswith(getText("cmd_nani")) or m.startswith(getTextDefault("cmd_nani")):
             output = "<:sanji:725100920576147487><:nani:725100919703863407>"
         elif m.startswith(getText("cmd_beri")) or m.startswith(getTextDefault("cmd_beri")):
             output = bb+"["+bb+"<:Beri:735987151485010021>"+bb+"(O.O)"+bb+"<:Beri:735987151485010021>"+bb+"]"
         elif m.startswith(getText("cmd_credits")) or m.startswith(getTextDefault("cmd_credits")):
             output = getText("credits1")+rt+getText("credits2")+rt+getText("credits3")+rt+getText("credits4")
+        # special dice
         elif m.startswith(getText("cmd_hit")) or m.startswith(getTextDefault("cmd_hit")):
             output = getText("hit_dice") +roll_hit() + authorID
         elif m.startswith(getText("cmd_coin")) or m.startswith(getTextDefault("cmd_coin")):
             output = getText("coin_dice") +roll_coin() + authorID
+        elif m.startswith(getText("cmd_advantage")) or m.startswith(getTextDefault("cmd_advantage")):
+            output = getText("advantage_dice") +roll_advantage(messageContent) + authorID
+        elif m.startswith(getText("cmd_disadvantage")) or m.startswith(getTextDefault("cmd_disadvantage")):
+            output = getText("disadvantage_dice") +roll_disadvantage(messageContent) + authorID
         # languages
         elif m.startswith(getText("cmd_language_list")) or m.startswith(getTextDefault("cmd_language_list")):
             output = getLangList()
@@ -80,7 +85,7 @@ async def on_message(message):
             print("shutdown: "+"LaBoum will now be shut down. It will not boot up on its own!"+rt)
             exit()
         elif m.startswith(getText("cmd_version")) or m.startswith(getTextDefault("cmd_version")):
-            output = "0.3.4"
+            output = "0.3.5"
         # unlisted in language-files
         elif m.startswith("dev"):
             output = getText("status")
@@ -222,7 +227,7 @@ def changeLanguage(m):
     if printLangInfo:                       # adds info about 'lang' command
         output += getText("language_selected")+getLanguage()+rt
         output += getText("language_change_text")
-        output += " "+bb+getText("cmd")+getText("cmd_language_set")+" xx"+bb+rt
+        output += " "+bb+getText("cmd_sign")+getText("cmd_language_set")+" xx"+bb+rt
         output += getText("language_replace_text")+rt+str(getLangList())
     return output
 
@@ -251,17 +256,17 @@ def getTextDefault(name):
 #-----------------------------METHODS------------------------------METHODS------------------------------METHODS------------------------------METHODS------------------------------#
 
 # seperator line with custom text
-def seperator(m):
-    output1 = "```\\\n |~==+++<<<<#####$$$$$$§§§§§§§"
-    output2 = " §§§§§§§$$$$$$#####>>>>+++==~\n/```"
-    messageArr = m.split()
+def seperator(messageContent):
+    output1 = cb + "╓\n" + "╠═══════════════════════════"
+    output2 = " ═══════════════════════════⌑" + "\n" + "╙" + cb
+    messageArr = messageContent.split()
     messageArgs = len(messageArr)
     argsCounter = 1
-    message = ""
-    while argsCounter<messageArgs:
-        message += (" " +messageArr[argsCounter])
+    displayMessage = ""
+    while argsCounter < messageArgs:
+        displayMessage += (" " +messageArr[argsCounter])
         argsCounter += 1
-    return (output1 +message +output2)
+    return (output1 +displayMessage +output2)
 
 # roll hit dice
 def roll_hit():
@@ -305,6 +310,70 @@ def roll_coin():
     else:
         output = getText("coin_error")
     return output
+
+# advantage
+def roll_advantage(messageContent):
+    operandValue = get_operatorValue(messageContent)
+    dice1 = random.randint(1, 20)
+    dice2 = random.randint(1, 20)
+    output = str(dice1)
+    higherNumber = dice1
+    operator = ""
+    # choosing the heigher value as the successor
+    if dice1 > dice2:
+        operator += " > "
+    elif dice1 == dice2:
+        operator += " = "
+    else:
+        operator += " < "
+        higherNumber = dice2
+    output += (operator + str(dice2))
+    if operandValue != 0:
+        output += (", with modifier " + str(operandValue) + ": " + str(dice1+operandValue)+ operator + str(dice2+operandValue))
+    output += (" ⇒ " + str(higherNumber + operandValue))
+    return output
+
+# disadvantage
+def roll_disadvantage(messageContent):
+    operandValue = get_operatorValue(messageContent)
+    dice1 = random.randint(1, 20)
+    dice2 = random.randint(1, 20)
+    output = str(dice1)
+    lowerNumber = dice1
+    operator = ""
+    # choosing the lower value as the successor
+    if dice1 > dice2:
+        operator += " > "
+        lowerNumber = dice2
+    elif dice1 == dice2:
+        operator += " = "
+    else:
+        operator += " < "
+    output += (operator + str(dice2))
+    if operandValue != 0:
+        output += (", with modifier " + str(operandValue) + ": " + str(dice1+operandValue)+ operator + str(dice2+operandValue))
+    output += (" ⇒ " + str(lowerNumber + operandValue))
+    return output
+
+# operator for dis-/advantage
+def get_operatorValue(messageContent):
+    argArr = messageContent.split()
+    operand = 0
+    argArrLen = len(argArr)-1
+    counter = 0
+    while counter <= argArrLen:
+        if (argArr[counter].startswith("+") or argArr[counter].startswith("-")):
+            operandStr = argArr[counter]
+            if argArr[counter].startswith("+"):
+                operandStr[-(len(operandStr)-1):]
+            try:
+                operand = int(operandStr)
+            except:
+                print(getText("ad_operand_error"))
+                operand = 0
+            counter = argArrLen
+        counter +=1
+    return operand
 
 # roll dice
 # a = amount; d = dice-sides; o = operator; v = value for operator
