@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.3.4 - Language change
+* ### Language change
+    * Removed english xml file (en.xml)
+    * Removed german xml file (de.xml)
+    * Added english txt file (en.txt)
+    * Added german txt file (de.txt)
+    * Added language list command
+    * Removed 'python_lang' import 
+* ### Other
+    * Added theme command
+    * Added theme ascii logo artwork
+    * Added Intents
+    * Fixed and edited text in README.md
+    * Edited order of some variables
+
 ## 0.3.3 - Information update
 * ### Information update
     * Added Changelog.md

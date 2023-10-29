@@ -29,7 +29,7 @@ Optional: You can give your bot a role for better rights management.
 
 ## <#>-------------<=======[ Commands ]=======>-------------<#> 
     All listed bot commands are in need of a "/" (slash) as first character of the command.  
-    (Note: You are able to change the "/" in the language xml files)  
+    (Note: You are able to change the "/" in the language txt files)  
     
   
 ### Help:
@@ -45,7 +45,7 @@ Optional: You can give your bot a role for better rights management.
 | Command | Description |
 | --- | ---|
 /lang(uage)| displays the currently chosen language and other available languages   
-/lang(uage) xx| changes the language to xx   
+/lang(uage) xx| changes the language to xx [currently available: en, de]
 
   
 ### Dice:  
@@ -99,12 +99,12 @@ As with the normal dice you can optional add an 'operand' and a 'value'.
 /exit0    | shuts the bot down - you have to manually start it again afterwards
 /status   | pings the bot to see if it is ready to be used
 /version  | displays the current version of the bot
-/wiki     | sends a link to Wookieepedia
+/wiki     | sends a link to onepiece.fandom and opwiki
 
   
 ### Bonus:
-There are currently five commands that are intentional not listed here.   
-Those five commands are eastereggs and do currently also need a '/' to get triggered.
+There are currently two commands that are intentional not listed here.   
+Those two commands are eastereggs and do also need a '/' to get triggered.
 
   
 ## <#>-------------<=======[ Configurations ]=======>-------------<#>
@@ -117,11 +117,13 @@ As this is an open source project you are free to edit the code yourself.
     You are able to change the values of the bodyparts of the hit dice:
 
     ```
-    247     arm = 3         # (consider: it's the value per arm)
-    248     leg = 3         # (consider: it's the value per leg)
-    249     head = 2
-    250     back = 2
-    251     chest = 4
+    line    code            comment
+    ------------------------------------------------------------
+    270     arm = 3         # (consider: it's the value per arm)
+    271     leg = 3         # (consider: it's the value per leg)
+    272     head = 2
+    273     back = 2
+    274     chest = 4
     ```
     In this case the chance to hit the left arm is 3 out of 20  
     (arm +arm +leg +leg +head +back +chest = 20)  
@@ -131,29 +133,29 @@ As this is an open source project you are free to edit the code yourself.
 2. ### Token configration:
     
     ```
-    351     token = "mytoken" # here you are able to replace the word <mytoken> with your 59 character token (not recommended)
+    366     token = "mytoken" # here you are able to replace the word <mytoken> with your 59 character token (not recommended)
     ```
     If you want to store your bot-token in the code you have to replace the word 'mytoken' but it is recommended not to store the token in the code. Read more about the token in chapter 'Token safety'.
 
       
 3. ### Language output configuration:
-    You can change the output texts of the bot in the xml-files of the languages-folder.  
-    Please be aware that some symbols in xml have to be changed out with the correct representation (like: &, ', <, >).  
+    You can change the output texts of the bot in the txt-files of the languages-folder.  
   
 ## <#>-------------<=======[ Token safety ]=======>-------------<#>
 The token of a discord bot is unique and should not be readable to others.  
 
 To clarify:  
-Someone who is able to get the token of your discord bot will not be able to access your sourcecode or be able to gain access to your server or computer.
+Someone who is able to get the token of your discord bot will not be able to access your sourcecode or be able to gain immediate access to your server or computer.
 Someone who is able to get the token of your discord bot will be able to controll your bot from writing text messages up to deleting content, channels and even banning people from the server. This is due to the fact that any owner of the token can write own code - most times with malicious intentions - to be executed by your bot.  
 
-The token is most likely like a TV-remote. Anyone who saw your TV-remote (=token) can build their own one (=code) and change the behaviour of your TV (=controll it).  
+The token is most likely like a password. Anyone who sees your password (=token) can use it to controll the corresponding account/Device. So do not leak it!
 
 **If your token ever gets leaked, head immediately to the 'Discord Developer Portal' to change the token.**  
 
 This is the reason the token should not be visible in the code, so you are not in danger of accedently revealing it to someone or even uploade it.
-The first time you use LaBoum, it will automaticly ask you for the token. It will be saved in the 'token.txt'.  
-In case you want to code with this bot and use git the token.txt is also listed in the .gitignore.  
+The first time you use LaBoum, it will automaticly ask you for the token to get saved locally in a file named 'token.txt'.
+
+In case you want to code with this bot and use git the token.txt is also listed in the .gitignore.
 
   
 ## <#>-------------<=======[ Other ]=======>-------------<#>

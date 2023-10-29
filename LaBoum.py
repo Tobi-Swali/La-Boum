@@ -1,27 +1,27 @@
 import discord
 import random
 import os
-import python_lang as lang
 
-client = discord.Client()
-lang.add("languages/en.xml", "english")
-lang.add("languages/de.xml", "deutsch")
-#lang.add("languages/test.xml", "test")  # for language tests
-lang.select("en")
-print("Greetings, The bot boots with its default language: "+lang.selected+".")
+intents = discord.Intents.default()
+intents.message_content = True
+client = discord.Client(intents = intents)
+
+language = "en"
+langPath = "languages/"+language+".txt"
+print("Greetings, The bot boots with its default language: "+language+".")
 
 # useful shortcut and markdown as variables for coding
 rt = "\n"       # rt = return
 cb = "```"      # cb = codeblock
-ii = "*"        # ii = italics
+#ii = "*"        # ii = italics
 bb = "**"       # bb = bold
-ib = "***"      # ib = italics and bold
-uu = "__"       # uu = underlined
-cc = "~~"       # cc = crossed (out)
+#ib = "***"      # ib = italics and bold
+#uu = "__"       # uu = underlined
+#cc = "~~"       # cc = crossed (out)
 
 @client.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
+    print('We have logged in as {self.user}.')
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="'/help'"))
 
 @client.event
@@ -37,46 +37,53 @@ async def on_message(message):
 
 #-----------------------------COMMANDS-----------------------------COMMANDS-----------------------------COMMANDS-----------------------------COMMANDS-----------------------------#
     
-    if m.startswith(getLine("cmd")) or m.startswith(getLineDefault("cmd")):
+    if m.startswith(getText("cmd_sign")) or m.startswith(getTextDefault("cmd_sign")):
         m = m[-(len(m)-1):]                 # remove first charater
-        # test for text commands
-        if m.startswith(getLine("cmd_status")) or m.startswith(getLineDefault("cmd_status")):
-            output = getLine("status")
-        elif m.startswith(getLine("cmd_help_player")) or m.startswith(getLineDefault("cmd_help_player")):
+        # ping test: status
+        if m.startswith(getText("cmd_status")) or m.startswith(getTextDefault("cmd_status")):
+            output = getText("status")
+        # help: commands for player and master
+        elif m.startswith(getText("cmd_help_player")) or m.startswith(getTextDefault("cmd_help_player")):
             output = cb
-            if m.startswith(getLine("cmd_help_master1")) or m.startswith(getLine("cmd_help_master2")) or m.startswith(getLineDefault("cmd_help_master1")) or m.startswith(getLineDefault("cmd_help_master2")):
-                output += getLine("help_master01")+rt+getLine("help_master02")+rt+getLine("help_master03")+rt+getLine("help_master04")+rt+getLine("help_master05")+rt+getLine("help_master06")+rt+getLine("help_master07")+rt+getLine("help_master08")+rt+getLine("help_master09")+rt+rt
-            output += getLine("help_player01")+rt+getLine("help_player02")+rt+getLine("help_player03")+rt+getLine("help_player04")+rt+getLine("help_player05")+rt+getLine("help_player06")+rt+getLine("help_player07")+cb
-        elif m.startswith(getLine("cmd_links")) or m.startswith(getLineDefault("cmd_links")):
-            output = getLine("links1")+rt+getLine("links2")
-        # TODO Add ASCII art (pref. height=26, length~80)
-        #elif m.startswith("theme"):
-        #    if m.startswith("themeping"):
-        #        output ="@here we are again\n"
-        #    output += "" #insert ascii-art later
-        elif m.startswith(getLine("cmd_cut")) or m.startswith(getLineDefault("cmd_cut")):
+            if m.startswith(getText("cmd_help_master1")) or m.startswith(getText("cmd_help_master2")) or m.startswith(getTextDefault("cmd_help_master1")) or m.startswith(getTextDefault("cmd_help_master2")):
+                output += getText("help_master01")+rt+getText("help_master02")+rt+getText("help_master03")+rt+getText("help_master04")+rt+getText("help_master05")+rt+getText("help_master06")+rt+getText("help_master07")+rt+getText("help_master08")+rt+getText("help_master09")+rt+rt
+            output += getText("help_player01")+rt+getText("help_player02")+rt+getText("help_player03")+rt+getText("help_player04")+rt+getText("help_player05")+rt+getText("help_player06")+rt+getText("help_player07")+cb
+        # text commands
+        elif m.startswith(getText("cmd_links")) or m.startswith(getTextDefault("cmd_links")):
+            output = getText("links1")+rt+getText("links2")
+        elif m.startswith(getText("cmd_theme_default")):
+            if m.startswith(getText("cmd_theme_ping")):
+                output = getText("ping")+rt
+            output += theme()
+        elif m.startswith(getText("cmd_cut")) or m.startswith(getTextDefault("cmd_cut")):
             output = seperator(m)
-        elif m.startswith(getLine("cmd_nani")) or m.startswith(getLineDefault("cmd_nani")):
+        elif m.startswith(getText("cmd_nani")) or m.startswith(getTextDefault("cmd_nani")):
             output = "<:sanji:725100920576147487><:nani:725100919703863407>"
-        elif m.startswith(getLine("cmd_beri")) or m.startswith(getLineDefault("cmd_beri")):
-            output = bb+"["+bb+"<:Beri:735987151485010021>"+bb+"(•ᴗ•)"+bb+"<:Beri:735987151485010021>"+bb+"]"
-        elif m.startswith(getLine("cmd_credits")) or m.startswith(getLineDefault("cmd_credits")):
-            output = getLine("credits1")+rt+getLine("credits2")+rt+getLine("credits3")+rt+getLine("credits4")
-        elif m.startswith(getLine("cmd_hit")) or m.startswith(getLineDefault("cmd_hit")):
-            output = getLine("hit") +roll_hit() + authorID
-        elif m.startswith(getLine("cmd_coin")) or m.startswith(getLineDefault("cmd_coin")):
-            output = getLine("coin") +roll_coin() + authorID
+        elif m.startswith(getText("cmd_beri")) or m.startswith(getTextDefault("cmd_beri")):
+            output = bb+"["+bb+"<:Beri:735987151485010021>"+bb+"(O.O)"+bb+"<:Beri:735987151485010021>"+bb+"]"
+        elif m.startswith(getText("cmd_credits")) or m.startswith(getTextDefault("cmd_credits")):
+            output = getText("credits1")+rt+getText("credits2")+rt+getText("credits3")+rt+getText("credits4")
+        elif m.startswith(getText("cmd_hit")) or m.startswith(getTextDefault("cmd_hit")):
+            output = getText("hit_dice") +roll_hit() + authorID
+        elif m.startswith(getText("cmd_coin")) or m.startswith(getTextDefault("cmd_coin")):
+            output = getText("coin_dice") +roll_coin() + authorID
         # languages
-        elif m.startswith(getLine("cmd_language")) or m.startswith(getLineDefault("cmd_language")):
-            output = language(m)
+        elif m.startswith(getText("cmd_language_list")) or m.startswith(getTextDefault("cmd_language_list")):
+            output = getLangList()
+        elif m.startswith(getText("cmd_language_set")) or m.startswith(getTextDefault("cmd_language_set")):
+            output = changeLanguage(m)
+        elif m.startswith(getText("cmd_language_get")) or m.startswith(getTextDefault("cmd_language_get")):
+            output = getText("language_selected")+getText("language_now")
         # maintenance
-        elif m.startswith(getLine("cmd_shutdown")) or m.startswith(getLineDefault("cmd_shutdown")):
-            await message.channel.send(getLine("shutdown"))
+        elif m.startswith(getText("cmd_shutdown")) or m.startswith(getTextDefault("cmd_shutdown")):
+            await message.channel.send(getText("shutdown"))
+            print("shutdown: "+"LaBoum will now be shut down. It will not boot up on its own!"+rt)
             exit()
-        elif m.startswith("dev"):   # unlisted in xml-language-files
-            output = getLine("status")
-        elif m.startswith(getLine("cmd_version")) or m.startswith(getLineDefault("cmd_version")):
-            output = "0.3.3"
+        elif m.startswith(getText("cmd_version")) or m.startswith(getTextDefault("cmd_version")):
+            output = "0.3.4"
+        # unlisted in language-files
+        elif m.startswith("dev"):
+            output = getText("status")
 
 #-----------------------------DICE---------------------------------DICE---------------------------------DICE---------------------------------DICE---------------------------------#
 
@@ -84,13 +91,13 @@ async def on_message(message):
         # inputfilter (d,w,1-9)
         if (output == "" and (len(m)>=1) and ((m[0]=="d") or (m[0]=="w") or (m[0]=="1") or (m[0]=="2") or (m[0]=="3") or (m[0]=="4") or (m[0]=="5") or (m[0]=="6") or (m[0]=="7") or (m[0]=="8") or (m[0]=="9"))):
             amountStr = ""
-            diceStr = ""                
-            valueStr = ""               
-            amount = 0                  # 'amount' of dice
-            dice = 0                    # kind of 'dice'
-            value = 0                   # operand 'value'
-            dw = "x"
+            valueStr = ""
+            diceStr = ""
             operand = ""                # 'operand'
+            amount = 0                  # 'amount' of dice
+            value = 0                   # 'value' of the operand
+            dice = 0                    # kind of 'dice'
+            dw = "x"
 
             # check for 'amount'
             while ((len(m) != 0) and ((m[0] != "d") and (m[0] != "w") and (m[0] != "+") and (m[0] != "-") and (m[0] != "*") and (m[0] != "/"))):
@@ -168,62 +175,78 @@ async def on_message(message):
         # check if any 'output' available
         if output == "":
             # No 'output' means incorrect command
-            output = getLine("general_error_input")
+            output = getText("general_error_input")
         # send the 'output' to discord
         await message.channel.send(output)
 
 #-----------------------------LANGUAGE-----------------------------LANGUAGE-----------------------------LANGUAGE-----------------------------LANGUAGE-----------------------------#
 
-def getLanguages():         # get all available languages
-    return lang.all()
+# get current language
+def getLanguage():
+    return language
 
-def getLine(text):          # line=keyword to output-string in xml
-    return getLineSuper(text, False)
+# get all available languages
+def getLangList():
+    fileList = ""
+    for file in os.listdir("languages"):
+        fileList += str(file[:-4])+rt # deletes the last 4 characters: '.txt'
+    return fileList
 
-def getLineDefault(text):
-    return getLineSuper(text, True)
-
-def getLineSuper(text, defaultLanguage):            # line=keyword to output-string in xml
-    if defaultLanguage:
-        temp = lang.selected
-        lang.select("en")
-    output = ""
-    output = lang.get(text)                         # set output to deposited string of the ordered 'text'-command in the currently chosen language
-    if output == text:                              # recursive check (if text of current language equals text of this method call)
-        if not defaultLanguage:
-            output = getLineDefault(text)
-        else:
-            output = "Error: Getting language text failed [for: "+text+"] (∿•͟ ͜ •)∿ ︵ ┻━┻"
-        if output.startswith("Error"):
-            output += rt+"Redirected to english. Could not find "+text+" in "+str(lang.selected)+" language"
-    output = output.lstrip(" ")                     # erase leading whitespaces from xml files
-    if output.startswith("."):                      # replace first '.' with a whitespace
-        output = output[-(len(output)-1):]
-        output = " "+output
-    if defaultLanguage:
-        lang.select(str(temp))
+# set new language 'lang'
+def setLanguage(lang):                  
+    global language
+    global langPath
+    selectedLanguage = language
+    language = lang
+    langPath = "languages/"+language+".txt"
+    output = getText("language_change_success")+" "+getText("language_now")
+    if selectedLanguage == lang:
+        output = getText("language_change_error_same_lang")
     return output
-    
-def language(m):
+
+def changeLanguage(m):
     output = ""
     mArray = m.split()
     printLangInfo = True
-    if len(mArray) == 2:                                    # allwos two arguments (2nd arguement is language string)
-        for element in getLanguages():
-            if (mArray[1] in element) and output == "":     # check if input language string is valid
-                lang.select(mArray[1])
-                output = getLine("language_change_success")+" "+lang.selected+rt
+    print("mArray:   "+str(mArray))
+    if len(mArray) == 2:                    # allwos two arguments (2nd arguement is language string)
+        langArr = getLangList().split(rt)
+        for entry in langArr:
+            if (mArray[1] == entry):        # check if input language string is valid
+                output = setLanguage(mArray[1])
                 printLangInfo = False
-        if output == "":                                    # non-valid language: error
-            output += getLine("language_error_unknown")+" ("+mArray[1]+")"+rt
-    elif len(mArray) > 2:                                   # too many arguments: error
-        output += getLine("language_error_too_many_arguments")+rt
-    if printLangInfo:                                       # adds info about 'lang' command
-        output += getLine("language_selected")+lang.selected+rt
-        output += getLine("language_change_text")
-        output += " **"+getLine("cmd")+getLine("cmd_language")+" xx**"+rt
-        output += getLine("language_replace_text")+str(getLanguages())
+        if output == "":                    # non-valid language: error
+            output += getText("language_error_unknown")+" ("+mArray[1]+")"+rt
+    elif len(mArray) > 2:                   # too many arguments: error
+        output += getText("language_error_too_many_arguments")+rt
+    if printLangInfo:                       # adds info about 'lang' command
+        output += getText("language_selected")+getLanguage()+rt
+        output += getText("language_change_text")
+        output += " "+bb+getText("cmd")+getText("cmd_language_set")+" xx"+bb+rt
+        output += getText("language_replace_text")+rt+str(getLangList())
     return output
+
+def getText(name):                  # returns the 'value' assignet to the 'name'
+    path = langPath
+    return getText2(name, path)
+    
+# gets the string from the language file of the currently chosen language
+def getText2(name, path):
+    with open(path) as f:
+        lines =f.readlines()
+        for line in lines:
+            if line.startswith(name):
+                # shorten 'line' by the length of 'name' from the front:
+                value =line[(len(name)):]
+                value =value.lstrip()        # erase leading whitespaces
+                if value.startswith("."):       # replace first '.' with a whitespace
+                    value =value[-(len(value)-1):]
+                    value =" "+value
+        return value[:-1]
+
+# gets the string from the default language: en
+def getTextDefault(name):
+    return getText2(name, "languages/en.txt")
 
 #-----------------------------METHODS------------------------------METHODS------------------------------METHODS------------------------------METHODS------------------------------#
 
@@ -254,21 +277,21 @@ def roll_hit():
     result = random.randint(1, amount)
     hit = ""
     if result<=arm:
-        hit = getLine("hit_arm_left")
+        hit = getText("hit_arm_left")
     elif result<=(2*arm):
-        hit = getLine("hit_arm_right")
+        hit = getText("hit_arm_right")
     elif result<=(2*arm +leg):
-        hit = getLine("hit_leg_left")
+        hit = getText("hit_leg_left")
     elif result<=(2*(arm+leg)):
-        hit = getLine("hit_leg_right")
+        hit = getText("hit_leg_right")
     elif result<=(amount-(chest +chest)):
-        hit = getLine("hit_head")
+        hit = getText("hit_head")
     elif result<=(amount-chest):
-        hit = getLine("hit_back")
+        hit = getText("hit_back")
     elif result<=amount:
-        hit = getLine("hit_chest")
+        hit = getText("hit_chest")
     else:
-        hit = getLine("hit_error")
+        hit = getText("hit_error")
     return hit
     
 # flip coin
@@ -276,11 +299,11 @@ def roll_coin():
     coin = random.randint(1, 2)
     output = ""
     if coin==1:
-        output = getLine("coin_high")
+        output = getText("coin_high")
     elif coin==2:
-        output = getLine("coin_low")
+        output = getText("coin_low")
     else:
-        output = getLine("coin_error")
+        output = getText("coin_error")
     return output
 
 # roll dice
@@ -314,33 +337,25 @@ def roll(a, d, o, v):
 #-----------------------------VISUALS------------------------------VISUALS------------------------------VISUALS------------------------------VISUALS------------------------------#
 
 def theme():
-    output =  "```                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    output +=    "                         "
-    return output
+    output  = "                                                OOooO°OO  °#*°o°     °o*O                                    "+rt
+    output += "   °.O@@@@@@@@@@@@@@@@@@@@@@@o°#@@@@@@@@@@@@@@# *. @@   °@O@*°. oOoOO  #@. *@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#"+rt
+    output += " *.  .#                     #   oO.              *o*  ooo  Oo**      *o..O                              **°° "+rt
+    output += " *  .  .   *O@@@@@@@@#o.   .  *##@@o @@@@o#@@#@@@@@#   o##@@@@O.    *@#.  o#####@@##o  °oOOO°         *O@@@* "+rt
+    output += "     . .@@@@@@@@@@@@@@@@@@#  . #@@@@°@@@@.@@@@@#oo#@°  °@@@@#@@@O   @@@#  °@@@@@OO#@@*@@@@@@@@o    O@@@o .   "+rt
+    output += "      @@@@@@O°       *@@@@@@O  o@@@@O@@@@ O@@@.     .   @@@° #@@@  .#@@o   @@@o     #@@@@*°@@@@  #@@@.       "+rt
+    output += "     @@@@@o            °@@@@@# o@@@@@@@@@ o@@@          @@@. #@@@°@@@@@@@@.@@@       @@@@  @@@@.@@@@         "+rt
+    output += "    @@@@@@@@@@@@@@@@@@@@@@@@@@°*@@@@@@@@@ *@@@   O      @@@  #@@@O@.O@@°O@*@@@    o .@@@@ .OOOo@@@@  #o °o.  "+rt
+    output += "   O@O° ..   .           °°.*#@@@@@@@@@@@ °@@@o#@@      @@@  @@@@ O@@@@@@* @@@#O@@O °@@@@      @@@@@@@@@@@@° "+rt
+    output += "   °@@@@O .@@@@o   #@@@O  @@@@@O@@@@@@@@@ °@@@  °@      @@@  @@@@ .@@@@@@  @@@   Oo °@@@@  ...°@@@@ .@@#o#@  "+rt
+    output += "    @@@@@ o@@@@@  o@@@@@ O@@@@°O@@@@@@@@@ °@@@          @@@@@@@@   @@@@@O  @@@      .@@@@  @@@@o@@@.   o*#** "+rt
+    output += "     @@@@@o***° o#  ****@@@@@o @@@@@@@@@@ *@@@         .@@@O°.     *@@@@°  @@@      o@@@@  @@@@ °@@@°  *o*@@#"+rt
+    output += "      @@@@@@#*  *O   O@@@@@@O  @@@@*@@@@@ o@@@#    @   °@@@°        @@@.  °@@@@    O@@@@@@@@@@@   O@@#°*.*   "+rt
+    output += "    .. °@@@@@@##O*O#o@@@@#O  °°@@@@o*@@@@°#@@@@@@@@@   #@@@#       .@@@o  #@@@@@@@@@o @@@@@@@#      °@#.@#o  "+rt
+    output += "**    .. °O***°*° *°oo*oo  .° °°°@O. *****@###@Ooo**   ********°..o*   °°.****@OOO##.   .**.         **o*@@O "+rt
+    output += " .*  *@o*oO@@@O°..°O@@@@@#o*#o .O@@@@@@@@@@@@#ooooO#@@@@@@@@@@@@#Ooo#@@@@@@@@@@@@#OooO@@@@@#@@@@@@@OoO@@@@@@o"+rt
+    output += "   °o@***                    .°oooo.            .°*°o*°           ..**o*.           .°*ooo°°.°°ooo*.         "+rt
+    output += "      .*                                                                                . °°**°°             "+rt
+    return cb+output+cb
 
 #-----------------------------TOKEN--------------------------------TOKEN--------------------------------TOKEN--------------------------------TOKEN--------------------------------#
 
@@ -359,7 +374,7 @@ if(len(token)<59):
             token = file.read().replace('\n', '') 
     else:
         # no token found
-        tokenInit = rt+getLine("token1")+rt+getLine("token2")+rt+getLine("token3")+rt+getLine("token4")
+        tokenInit = rt+getText("token1")+rt+getText("token2")+rt+getText("token3")+rt+getText("token4")
         token = input("Discord token:")
         with open(token_path, 'w') as file:
             file.write(token)
